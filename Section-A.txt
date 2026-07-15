@@ -1,0 +1,50 @@
+1).What is the functional difference between SELECT * and specifying column 
+names, and when is each preferred?
+->| `SELECT *`                                                                                                     
+- Retrieves **all columns** from the table.                                                                      
+- May return unnecessary data, increasing memory and network usage.                                     
+- If the table structure changes (columns added/removed), the result changes automatically. 
+- Can be slower for large tables with many columns.                                                    
+ -Makes queries less readable.                                                                              
+
+SELECT column_name1, column_name2,...
+- Retrieves only the specified columns.
+- Returns only the required data, improving performance.
+- Results remain consistent even if new columns are added to the table.
+- Usually faster because less data is read and transferred.
+- Makes queries cleaner and easier to understand.
+
+2).Which keyword renames a column in the output, and does this alias change 
+the actual table structure in the database?
+->No. An alias only changes the column heading in the query result. It does not:
+
+Rename the column in the database.
+Modify the table structure.
+Affect the stored data.
+
+select column_name as alias_name from table_name;
+
+->Example
+ select first_name as worker_name from worker;
+
+->| worker_name |
+| ----------- |
+| Amitabh     |
+| Vipul       |
+| Satish      |
+
+3).Why does wrapping a numeric value in quotes (e.g., '5000') in a WHERE clause 
+create a data type conflict in SQL?
+
+->Using quotes for numeric values can:
+
+Cause unnecessary data type conversions.
+Reduce query performance because conversions may prevent efficient use of indexes.
+Lead to errors if the string is not a valid numeric value.
+Make the code less clear and less portable across different database systems.
+
+- select * from employee where salary = 5000;
+- select * from employee where salary = '5000'; # 'five thousand' is correct than '5000'.
+
+
+
