@@ -1,0 +1,19 @@
+Que. 1
+| `SELECT *`                       | Specific columns                |
+| -------------------------------- | ------------------------------- |
+| Returns all columns              | Returns only selected columns   |
+| Convenient                       | More precise                    |
+| Good for exploration/testing     | Better for applications/reports |
+| Can return unnecessary data      | Usually more efficient          |
+| Can be affected by added columns | More predictable output         |
+
+Que. 2
+No. An alias only changes the name displayed in the query result. It does not change the column name in the database.
+Example:
+SELECT team1
+FROM ipl_matches;
+
+ALTER TABLE ipl_matches
+RENAME COLUMN team1 TO first_team;
+
+Que. 3
