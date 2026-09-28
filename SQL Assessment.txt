@@ -17,3 +17,265 @@ ALTER TABLE ipl_matches
 RENAME COLUMN team1 TO first_team;
 
 Que. 3
+| Data   | Correct example            |
+| ------ | -------------------------- |
+| Number | `salary > 5000`            |
+| Text   | `department = 'Admin'`     |
+| Date   | `join_date = '2021-02-15'` |
+
+salary INT
+SELECT *
+FROM workers
+WHERE salary > 5000;
+
+INT > INT
+SELECT *
+FROM workers
+WHERE salary > '5000';
+
+Que. 4
+SELECT *
+FROM orders
+ORDER BY Profit DESC
+LIMIT 10;
+| Order | Profit |
+| ----- | -----: |
+| A101  |  9,500 |
+| A205  |  8,200 |
+| A310  |  7,800 |
+| A415  |  7,100 |
+| ...   |    ... |
+
+* Desc
+ORDER BY Profit DESC
+LIMIT 10;
+| Order | Profit |
+| ----- | -----: |
+| A501  | -2,000 |
+| A602  | -1,500 |
+| A703  |   -800 |
+| A804  |    100 |
+| ...   |    ... |
+
+Que. 5
+
+SELECT *
+FROM orders
+ORDER BY Profit DESC
+LIMIT 10;
+
+T-SQL
+SELECT TOP 10 *
+FROM orders
+ORDER BY Profit DESC;
+
+SELECT *
+FROM orders
+ORDER BY Profit DESC
+OFFSET 0 ROWS
+FETCH NEXT 10 ROWS ONLY;
+
+| Database       | Limiting rows              |
+| -------------- | -------------------------- |
+| **MySQL**      | `LIMIT 10`                 |
+| **SQL Server** | `TOP 10`                   |
+| **PostgreSQL** | `LIMIT 10`                 |
+| **Oracle**     | `FETCH FIRST 10 ROWS ONLY` |
+
+Que. 6
+WHERE → 2. SELECT → 3. ORDER BY → 4. LIMIT
+SELECT product, Profit
+FROM orders
+WHERE Profit > 5000
+ORDER BY Profit DESC
+LIMIT 10;
+WHERE Profit > 5000
+SELECT product, Profit
+ORDER BY Profit DESC
+LIMIT 10
+
+SELECT
+FROM
+WHERE
+ORDER BY
+LIMIT
+
+WHERE
+↓
+SELECT
+↓
+ORDER BY
+↓
+LIMIT
+
+2). PRACTICLE TASK:
+Que. 1
+mysql> desc orders;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| order_id     | int           | NO   | PRI | NULL    |       |
+| user_id      | int           | YES  | MUL | NULL    |       |
+| total_amount | decimal(10,2) | YES  |     | NULL    |       |
+| app_name     | varchar(50)   | YES  |     | NULL    |       |
+| order_date   | date          | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+5 rows in set (0.06 sec)
+
+mysql> SELECT *
+    -> FROM orders
+    -> LIMIT 20;
++----------+---------+--------------+----------+------------+
+| order_id | user_id | total_amount | app_name | order_date |
++----------+---------+--------------+----------+------------+
+|        1 |     101 |       450.00 | Zomato   | 2026-07-01 |
+|        2 |     102 |       320.50 | Swiggy   | 2026-07-07 |
+|        3 |     103 |       600.00 | Flipkart | 2026-07-04 |
+|        4 |     101 |       250.00 | Zomato   | 2026-07-02 |
+|        5 |     104 |       700.00 | Swiggy   | 2026-07-09 |
+|        6 |     105 |       150.00 | Flipkart | 2026-07-05 |
+|        7 |     106 |       500.00 | Zoamto   | 2026-07-08 |
+|        8 |     107 |       800.00 | Swiggy   | 2026-07-06 |
+|        9 |     108 |      1200.00 | Flipkart | 2026-07-01 |
+|       10 |     109 |       350.00 | Zomato   | 2026-07-04 |
++----------+---------+--------------+----------+------------+
+10 rows in set (0.03 sec)
+
+mysql> SELECT COUNT(*) AS total_orders
+    -> FROM orders;
++--------------+
+| total_orders |
++--------------+
+|           10 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM orders
+    -> ORDER BY order_id
+    -> LIMIT 20;
++----------+---------+--------------+----------+------------+
+| order_id | user_id | total_amount | app_name | order_date |
++----------+---------+--------------+----------+------------+
+|        1 |     101 |       450.00 | Zomato   | 2026-07-01 |
+|        2 |     102 |       320.50 | Swiggy   | 2026-07-07 |
+|        3 |     103 |       600.00 | Flipkart | 2026-07-04 |
+|        4 |     101 |       250.00 | Zomato   | 2026-07-02 |
+|        5 |     104 |       700.00 | Swiggy   | 2026-07-09 |
+|        6 |     105 |       150.00 | Flipkart | 2026-07-05 |
+|        7 |     106 |       500.00 | Zoamto   | 2026-07-08 |
+|        8 |     107 |       800.00 | Swiggy   | 2026-07-06 |
+|        9 |     108 |      1200.00 | Flipkart | 2026-07-01 |
+|       10 |     109 |       350.00 | Zomato   | 2026-07-04 |
++----------+---------+--------------+----------+------------+
+10 rows in set (0.00 sec)
+
+mysql>
+
+Que. 2
+mysql> SELECT
+    ->     Order_ID,
+    ->     Order_Date,
+    ->     Sales AS Total_Sales,
+    ->     Profit
+    -> FROM orders;
++----------+------------+-------------+--------+
+| Order_ID | Order_Date | Total_Sales | Profit |
++----------+------------+-------------+--------+
+|        1 | 2026-07-01 |        1500 |    300 |
+|        2 | 2026-07-07 |        5000 |   3800 |
+|        3 | 2026-07-04 |        3000 |   1975 |
+|        4 | 2026-07-02 |        2000 |    250 |
+|        5 | 2026-07-09 |        7000 |   2500 |
+|        6 | 2026-07-05 |       11000 |   4500 |
+|        7 | 2026-07-08 |       21000 |   2100 |
+|        8 | 2026-07-06 |       24000 |   5000 |
+|        9 | 2026-07-01 |        9000 |   2000 |
+|       10 | 2026-07-04 |       51000 |  21000 |
++----------+------------+-------------+--------+
+10 rows in set (0.00 sec)
+
+mysql>
+
+Que. 3
+mysql> SELECT *
+    -> FROM orders
+    -> WHERE Sales > 5000;
++----------+---------+--------------+----------+------------+-------+--------+
+| order_id | user_id | total_amount | app_name | order_date | Sales | Profit |
++----------+---------+--------------+----------+------------+-------+--------+
+|        5 |     104 |       700.00 | Swiggy   | 2026-07-09 |  7000 |   2500 |
+|        6 |     105 |       150.00 | Flipkart | 2026-07-05 | 11000 |   4500 |
+|        7 |     106 |       500.00 | Zoamto   | 2026-07-08 | 21000 |   2100 |
+|        8 |     107 |       800.00 | Swiggy   | 2026-07-06 | 24000 |   5000 |
+|        9 |     108 |      1200.00 | Flipkart | 2026-07-01 |  9000 |   2000 |
+|       10 |     109 |       350.00 | Zomato   | 2026-07-04 | 51000 |  21000 |
++----------+---------+--------------+----------+------------+-------+--------+
+6 rows in set (0.01 sec)
+
+mysql> SELECT Order_ID, Order_Date, Sales, Profit
+    -> FROM orders
+    -> WHERE Sales > 5000;
++----------+------------+-------+--------+
+| Order_ID | Order_Date | Sales | Profit |
++----------+------------+-------+--------+
+|        5 | 2026-07-09 |  7000 |   2500 |
+|        6 | 2026-07-05 | 11000 |   4500 |
+|        7 | 2026-07-08 | 21000 |   2100 |
+|        8 | 2026-07-06 | 24000 |   5000 |
+|        9 | 2026-07-01 |  9000 |   2000 |
+|       10 | 2026-07-04 | 51000 |  21000 |
++----------+------------+-------+--------+
+6 rows in set (0.00 sec)
+
+mysql>
+
+Que. 4
+mysql> SELECT *
+    -> FROM orders
+    -> ORDER BY Profit DESC
+    -> LIMIT 10;
++----------+---------+--------------+----------+------------+-------+--------+
+| order_id | user_id | total_amount | app_name | order_date | Sales | Profit |
++----------+---------+--------------+----------+------------+-------+--------+
+|       10 |     109 |       350.00 | Zomato   | 2026-07-04 | 51000 |  21000 |
+|        8 |     107 |       800.00 | Swiggy   | 2026-07-06 | 24000 |   5000 |
+|        6 |     105 |       150.00 | Flipkart | 2026-07-05 | 11000 |   4500 |
+|        2 |     102 |       320.50 | Swiggy   | 2026-07-07 |  5000 |   3800 |
+|        5 |     104 |       700.00 | Swiggy   | 2026-07-09 |  7000 |   2500 |
+|        7 |     106 |       500.00 | Zoamto   | 2026-07-08 | 21000 |   2100 |
+|        9 |     108 |      1200.00 | Flipkart | 2026-07-01 |  9000 |   2000 |
+|        3 |     103 |       600.00 | Flipkart | 2026-07-04 |  3000 |   1975 |
+|        1 |     101 |       450.00 | Zomato   | 2026-07-01 |  1500 |    300 |
+|        4 |     101 |       250.00 | Zomato   | 2026-07-02 |  2000 |    250 |
++----------+---------+--------------+----------+------------+-------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT Order_ID, Order_Date, Sales, Profit
+    -> FROM orders
+    -> ORDER BY Profit DESC
+    -> LIMIT 10;
++----------+------------+-------+--------+
+| Order_ID | Order_Date | Sales | Profit |
++----------+------------+-------+--------+
+|       10 | 2026-07-04 | 51000 |  21000 |
+|        8 | 2026-07-06 | 24000 |   5000 |
+|        6 | 2026-07-05 | 11000 |   4500 |
+|        2 | 2026-07-07 |  5000 |   3800 |
+|        5 | 2026-07-09 |  7000 |   2500 |
+|        7 | 2026-07-08 | 21000 |   2100 |
+|        9 | 2026-07-01 |  9000 |   2000 |
+|        3 | 2026-07-04 |  3000 |   1975 |
+|        1 | 2026-07-01 |  1500 |    300 |
+|        4 | 2026-07-02 |  2000 |    250 |
++----------+------------+-------+--------+
+10 rows in set (0.00 sec)
+
+mysql>
+
+3). Mini Project
+Title: Retail Profitability & Market Segment Analysis Data Analytics [ SQL for Data Analytics - A1]
+
+
+
+

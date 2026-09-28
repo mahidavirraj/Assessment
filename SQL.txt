@@ -2147,3 +2147,1338 @@ mysql> SELECT
 +-----------+---------+------------+--------+------------------+-------------------+
 4 rows in set (0.01 sec)
 
+# Session - 14
+mysql> select * from Orders;
++----------+---------+--------------+----------+------------+
+| order_id | user_id | order_amount | app_name | order_date |
++----------+---------+--------------+----------+------------+
+|        1 |     101 |       450.00 | Zomato   | NULL       |
+|        2 |     102 |       320.50 | Swiggy   | NULL       |
+|        3 |     103 |       600.00 | Flipkart | NULL       |
+|        4 |     101 |       250.00 | Zomato   | NULL       |
+|        5 |     104 |       700.00 | Swiggy   | NULL       |
+|        6 |     105 |       150.00 | Flipkart | NULL       |
+|        7 |     106 |       500.00 | Zoamto   | NULL       |
+|        8 |     107 |       800.00 | Swiggy   | NULL       |
+|        9 |     108 |      1200.00 | Flipkart | NULL       |
+|       10 |     109 |       350.00 | Zomato   | NULL       |
++----------+---------+--------------+----------+------------+
+10 rows in set (0.00 sec)
+
+mysql> update Orders set order_date = '2026-07-01';
+Query OK, 10 rows affected (0.01 sec)
+Rows matched: 10  Changed: 10  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-01' where order_id = 1;
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-07' where order_id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-04' where order_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-02' where order_id = 4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-09' where order_id = 5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-05' where order_id = 6;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-08' where order_id = 7;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-06' where order_id = 8;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-01' where order_id = 9;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> update Orders set order_date = '2026-07-04' where order_id = 10;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Orders;
++----------+---------+--------------+----------+------------+
+| order_id | user_id | order_amount | app_name | order_date |
++----------+---------+--------------+----------+------------+
+|        1 |     101 |       450.00 | Zomato   | 2026-07-01 |
+|        2 |     102 |       320.50 | Swiggy   | 2026-07-07 |
+|        3 |     103 |       600.00 | Flipkart | 2026-07-04 |
+|        4 |     101 |       250.00 | Zomato   | 2026-07-02 |
+|        5 |     104 |       700.00 | Swiggy   | 2026-07-09 |
+|        6 |     105 |       150.00 | Flipkart | 2026-07-05 |
+|        7 |     106 |       500.00 | Zoamto   | 2026-07-08 |
+|        8 |     107 |       800.00 | Swiggy   | 2026-07-06 |
+|        9 |     108 |      1200.00 | Flipkart | 2026-07-01 |
+|       10 |     109 |       350.00 | Zomato   | 2026-07-04 |
++----------+---------+--------------+----------+------------+
+10 rows in set (0.00 sec)
+mysql> SELECT
+    ->     order_id,
+    ->     user_id,
+    ->     order_date,
+    ->     total_amount,
+    ->     ROW_NUMBER() OVER (
+    ->         PARTITION BY user_id
+    ->         ORDER BY order_date DESC
+    ->     ) AS order_seq
+    -> FROM Orders;
++----------+---------+------------+--------------+-----------+
+| order_id | user_id | order_date | total_amount | order_seq |
++----------+---------+------------+--------------+-----------+
+|        4 |     101 | 2026-07-02 |       250.00 |         1 |
+|        1 |     101 | 2026-07-01 |       450.00 |         2 |
+|        2 |     102 | 2026-07-07 |       320.50 |         1 |
+|        3 |     103 | 2026-07-04 |       600.00 |         1 |
+|        5 |     104 | 2026-07-09 |       700.00 |         1 |
+|        6 |     105 | 2026-07-05 |       150.00 |         1 |
+|        7 |     106 | 2026-07-08 |       500.00 |         1 |
+|        8 |     107 | 2026-07-06 |       800.00 |         1 |
+|        9 |     108 | 2026-07-01 |      1200.00 |         1 |
+|       10 |     109 | 2026-07-04 |       350.00 |         1 |
++----------+---------+------------+--------------+-----------+
+10 rows in set (0.01 sec)
+
+mysql>
+
+mysql> select * from Songs;
++------------+----------------+---------+
+| song_name  | artist         | song_id |
++------------+----------------+---------+
+| Tum Hi Ho  | Arijit Singh   |    NULL |
+| Sajna      | Darshan Raval  |    NULL |
+| Ilahi      | Arijit Singh   |    NULL |
+| Barso Re   | Shreya Ghoshal |    NULL |
+| Ratt Bhar  | Arijit Singh   |    NULL |
+| Tera Zikra | Darshan Raval  |    NULL |
++------------+----------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> update Songs set song_id = '1' where song_name = Tum Hi Ho;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Hi Ho' at line 1
+mysql> update Songs set song_id = '1' where song_name = 'Tum Hi Ho';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set song_id = '2' where song_name = 'Sajna';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set song_id = '3' where song_name = 'Ilahi';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set song_id = '4' where song_name = 'Barso Re';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set song_id = '5' where song_name = 'Ratt Bhar';
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set song_id = '6' where song_name = 'Tera Zikra';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Songs;
++------------+----------------+---------+
+| song_name  | artist         | song_id |
++------------+----------------+---------+
+| Tum Hi Ho  | Arijit Singh   |       1 |
+| Sajna      | Darshan Raval  |       2 |
+| Ilahi      | Arijit Singh   |       3 |
+| Barso Re   | Shreya Ghoshal |       4 |
+| Ratt Bhar  | Arijit Singh   |       5 |
+| Tera Zikra | Darshan Raval  |       6 |
++------------+----------------+---------+
+6 rows in set (0.00 sec)
+mysql> alter table Songs add (streams varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update Songs set streams = 'spotify' where song_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set streams = 'youtube' where song_id = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set streams = 'jiosavan' where song_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set streams = 'ganna' where song_id = 4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set streams = 'spotify' where song_id = 5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Songs set streams = 'jiosavan' where song_id = 6;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Songs;
++------------+----------------+---------+----------+
+| song_name  | artist         | song_id | streams  |
++------------+----------------+---------+----------+
+| Tum Hi Ho  | Arijit Singh   |       1 | spotify  |
+| Sajna      | Darshan Raval  |       2 | youtube  |
+| Ilahi      | Arijit Singh   |       3 | jiosavan |
+| Barso Re   | Shreya Ghoshal |       4 | ganna    |
+| Ratt Bhar  | Arijit Singh   |       5 | spotify  |
+| Tera Zikra | Darshan Raval  |       6 | jiosavan |
++------------+----------------+---------+----------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     song_id,
+    ->     artist,
+    ->     streams,
+    ->     RANK() OVER (
+    ->         PARTITION BY artist
+    ->         ORDER BY streams DESC
+    ->     ) AS stream_rank
+    -> FROM Songs;
++---------+----------------+----------+-------------+
+| song_id | artist         | streams  | stream_rank |
++---------+----------------+----------+-------------+
+|       1 | Arijit Singh   | spotify  |           1 |
+|       5 | Arijit Singh   | spotify  |           1 |
+|       3 | Arijit Singh   | jiosavan |           3 |
+|       2 | Darshan Raval  | youtube  |           1 |
+|       6 | Darshan Raval  | jiosavan |           2 |
+|       4 | Shreya Ghoshal | ganna    |           1 |
++---------+----------------+----------+-------------+
+6 rows in set (0.01 sec)
+
+mysql>
+
+mysql> alter table Movies rename column id to movie_id;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from Movies;
++------------+--------------+----------+----------+-----------------------+
+| movie_name | release_year | genre    | movie_id | box_office_collection |
++------------+--------------+----------+----------+-----------------------+
+| Inception  |         2009 | Action   |        1 |                  2500 |
+| Saiyara    |         2025 | Romantic |        2 |                  7800 |
+| Shiddat    |         2021 | Romantic |        3 |            2100000000 |
++------------+--------------+----------+----------+-----------------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table Movies add column (rating decimal(10,2));
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update Movies set rating = '4.2' where movie_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Movies set rating = '4.6' where movie_id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Movies set rating = '4.1' where movie_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Movies;
++------------+--------------+----------+----------+-----------------------+--------+
+| movie_name | release_year | genre    | movie_id | box_office_collection | rating |
++------------+--------------+----------+----------+-----------------------+--------+
+| Inception  |         2009 | Action   |        1 |                  2500 |   4.20 |
+| Saiyara    |         2025 | Romantic |        2 |                  7800 |   4.60 |
+| Shiddat    |         2021 | Romantic |        3 |            2100000000 |   4.10 |
++------------+--------------+----------+----------+-----------------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     movie_id,
+    ->     genre,
+    ->     rating,
+    ->     DENSE_RANK() OVER (
+    ->         PARTITION BY genre
+    ->         ORDER BY rating DESC
+    ->     ) AS rating_rank
+    -> FROM Movies;
++----------+----------+--------+-------------+
+| movie_id | genre    | rating | rating_rank |
++----------+----------+--------+-------------+
+|        1 | Action   |   4.20 |           1 |
+|        2 | Romantic |   4.60 |           1 |
+|        3 | Romantic |   4.10 |           2 |
++----------+----------+--------+-------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+mysql> create table Influencers(id int primary key, platform varchar(50), followers int);
+ERROR 1050 (42S01): Table 'influencers' already exists
+mysql> desc influencers;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| influencer_id   | int         | NO   | PRI | NULL    |       |
+| influencer_name | varchar(50) | YES  |     | NULL    |       |
+| city            | varchar(50) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table influencer rename column influencer_id to id;
+ERROR 1146 (42S02): Table 'food_delivery_db.influencer' doesn't exist
+mysql> alter table influencers rename column influencer_id to id;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table influencers add column (platform varchar(50), followers int);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from influencers;
++----+-----------------+-----------+----------+-----------+
+| id | influencer_name | city      | platform | followers |
++----+-----------------+-----------+----------+-----------+
+|  1 | Vikas           | Mumbai    | NULL     |      NULL |
+|  2 | Priya           | Delhi     | NULL     |      NULL |
+|  3 | Rohan           | Ahmedabad | NULL     |      NULL |
++----+-----------------+-----------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> update influencers set platform = 'facebook', followers = '1800' where id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update influencers set platform = 'instagram', followers = '3580' where id = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update influencers set platform = 'instagram', followers = '5000' where id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from influencers;
++----+-----------------+-----------+-----------+-----------+
+| id | influencer_name | city      | platform  | followers |
++----+-----------------+-----------+-----------+-----------+
+|  1 | Vikas           | Mumbai    | facebook  |      1800 |
+|  2 | Priya           | Delhi     | instagram |      3580 |
+|  3 | Rohan           | Ahmedabad | instagram |      5000 |
++----+-----------------+-----------+-----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> WITH RankedInfluencers AS (
+    ->     SELECT
+    ->         id,
+    ->         platform,
+    ->         followers,
+    ->         ROW_NUMBER() OVER (
+    ->             PARTITION BY platform
+    ->             ORDER BY followers DESC
+    ->         ) AS row_num
+    ->     FROM Influencers
+    -> )
+    -> SELECT
+    ->     id,
+    ->     platform,
+    ->     followers,
+    ->     row_num
+    -> FROM RankedInfluencers
+    -> WHERE row_num <= 3;
++----+-----------+-----------+---------+
+| id | platform  | followers | row_num |
++----+-----------+-----------+---------+
+|  1 | facebook  |      1800 |       1 |
+|  3 | instagram |      5000 |       1 |
+|  2 | instagram |      3580 |       2 |
++----+-----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+# Session - 15
+mysql> SELECT NOW() AS CurrentDateTime;
++---------------------+
+| CurrentDateTime     |
++---------------------+
+| 2026-07-16 10:19:15 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql>
+
+mysql> SELECT
+    ->     order_date,
+    ->     YEAR(order_date) AS order_year,
+    ->     MONTH(order_date) AS order_month,
+    ->     DAY(order_date) AS order_day
+    -> FROM Orders;
++------------+------------+-------------+-----------+
+| order_date | order_year | order_month | order_day |
++------------+------------+-------------+-----------+
+| 2026-07-01 |       2026 |           7 |         1 |
+| 2026-07-07 |       2026 |           7 |         7 |
+| 2026-07-04 |       2026 |           7 |         4 |
+| 2026-07-02 |       2026 |           7 |         2 |
+| 2026-07-09 |       2026 |           7 |         9 |
+| 2026-07-05 |       2026 |           7 |         5 |
+| 2026-07-08 |       2026 |           7 |         8 |
+| 2026-07-06 |       2026 |           7 |         6 |
+| 2026-07-01 |       2026 |           7 |         1 |
+| 2026-07-04 |       2026 |           7 |         4 |
++------------+------------+-------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql>
+
+mysql> create table Deliveries(delivery_date date);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> inasert into Deliveries values
+    -> ('2026-05-12'),
+    -> ('2026-05-17'),
+    -> ('2026-05-25'),
+    -> ('2026-05-10');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'inasert into Deliveries values
+('2026-05-12'),
+('2026-05-17'),
+('2026-05-25'),
+(' at line 1
+mysql> inasert into Deliveries values('2026-04-10');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'inasert into Deliveries values('2026-04-10')' at line 1
+mysql> insert into Deliveries values('2026-04-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Deliveries values('2026-04-17');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Deliveries values('2026-04-12');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Deliveries values('2026-04-14');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Deliveries values('2026-04-25');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Deliveries values('2026-04-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Deliveries;
++---------------+
+| delivery_date |
++---------------+
+| 2026-04-10    |
+| 2026-04-17    |
+| 2026-04-12    |
+| 2026-04-14    |
+| 2026-04-25    |
+| 2026-04-22    |
++---------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     delivery_date,
+    ->     DATE_SUB(delivery_date, INTERVAL 2 DAY) AS expected_pickup_date
+    -> FROM Deliveries;
++---------------+----------------------+
+| delivery_date | expected_pickup_date |
++---------------+----------------------+
+| 2026-04-10    | 2026-04-08           |
+| 2026-04-17    | 2026-04-15           |
+| 2026-04-12    | 2026-04-10           |
+| 2026-04-14    | 2026-04-12           |
+| 2026-04-25    | 2026-04-23           |
+| 2026-04-22    | 2026-04-20           |
++---------------+----------------------+
+6 rows in set (0.00 sec)
+
+mysql>
+
+mysql> create table Subscriptions(user_id int, start_date date, end_date date);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into Subscriptions values
+    -> (101, '2025-03-11', '2026-03-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Subscriptions values
+    -> (102, '2024-01-11', '2026-01-25'),
+    -> (103, '2026-01-11', '2026-07-17');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from Subscriptions;
++---------+------------+------------+
+| user_id | start_date | end_date   |
++---------+------------+------------+
+|     101 | 2025-03-11 | 2026-03-10 |
+|     102 | 2024-01-11 | 2026-01-25 |
+|     103 | 2026-01-11 | 2026-07-17 |
++---------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     user_id,
+    ->     start_date,
+    ->     end_date,
+    ->     DATEDIFF(end_date, start_date) AS total_days
+    -> FROM Subscriptions;
++---------+------------+------------+------------+
+| user_id | start_date | end_date   | total_days |
++---------+------------+------------+------------+
+|     101 | 2025-03-11 | 2026-03-10 |        364 |
+|     102 | 2024-01-11 | 2026-01-25 |        745 |
+|     103 | 2026-01-11 | 2026-07-17 |        187 |
++---------+------------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+mysql> create table Applogins(user_id int, last_login_date date);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into Applogins values
+    -> (201, '2026-01-24'),
+    -> (202, '2026-03-20'),
+    -> (203, '2026-05-26');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from Applogins;
++---------+-----------------+
+| user_id | last_login_date |
++---------+-----------------+
+|     201 | 2026-01-24      |
+|     202 | 2026-03-20      |
+|     203 | 2026-05-26      |
++---------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     user_id,
+    ->     last_login_date
+    -> FROM AppLogins
+    -> WHERE DATEDIFF(NOW(), last_login_date) > 30;
++---------+-----------------+
+| user_id | last_login_date |
++---------+-----------------+
+|     201 | 2026-01-24      |
+|     202 | 2026-03-20      |
+|     203 | 2026-05-26      |
++---------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+# Session - 16
+mysql> desc users;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int         | YES  |     | NULL    |       |
+| name      | varchar(50) | YES  |     | NULL    |       |
+| city      | varchar(50) | YES  |     | NULL    |       |
+| followers | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> alter table users rename column name to first_name;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from users;
++------+------------+-----------+-----------+
+| id   | first_name | city      | followers |
++------+------------+-----------+-----------+
+|    1 | Shreyash   | Ahmedabad |     85000 |
+|    2 | Twisha     | Vadodara  |      4000 |
+|    3 | Divya      | Vadodara  |      2700 |
+|    4 | Hardik     | Ahmedabad |      3700 |
+|    5 | Sunil      | Anand     |      7100 |
+|    6 | Preksha    | Surat     |      1400 |
++------+------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> alter table users add column (last_name varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update users set column last_name = 'Patel' where id = 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'column last_name = 'Patel' where id = 1' at line 1
+mysql> update users set last_name = 'Patel' where id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update users set last_name = 'Dave' where id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update users set last_name = 'Shah' where id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update users set last_name = 'Mahida' where id = 4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update users set last_name = 'Parmar' where id = 5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update users set last_name = 'Singh' where id = 6;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from users;
++------+------------+-----------+-----------+-----------+
+| id   | first_name | city      | followers | last_name |
++------+------------+-----------+-----------+-----------+
+|    1 | Shreyash   | Ahmedabad |     85000 | Patel     |
+|    2 | Twisha     | Vadodara  |      4000 | Dave      |
+|    3 | Divya      | Vadodara  |      2700 | Shah      |
+|    4 | Hardik     | Ahmedabad |      3700 | Mahida    |
+|    5 | Sunil      | Anand     |      7100 | Parmar    |
+|    6 | Preksha    | Surat     |      1400 | Singh     |
++------+------------+-----------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     first_name,
+    ->     last_name,
+    ->     CONCAT(first_name, ' ', last_name) AS full_name
+    -> FROM users;
++------------+-----------+----------------+
+| first_name | last_name | full_name      |
++------------+-----------+----------------+
+| Shreyash   | Patel     | Shreyash Patel |
+| Twisha     | Dave      | Twisha Dave    |
+| Divya      | Shah      | Divya Shah     |
+| Hardik     | Mahida    | Hardik Mahida  |
+| Sunil      | Parmar    | Sunil Parmar   |
+| Preksha    | Singh     | Preksha Singh  |
++------------+-----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql>
+
+mysql> desc playlists;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| id                 | int         | NO   | PRI | NULL    |       |
+| playlist_name      | varchar(50) | YES  |     | NULL    |       |
+| parent_playlist_id | int         | YES  |     | NULL    |       |
+| user_name          | varchar(50) | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from playlists;
++----+---------------+--------------------+-----------+
+| id | playlist_name | parent_playlist_id | user_name |
++----+---------------+--------------------+-----------+
+|  1 | Workout       |               NULL | Hiren     |
+|  2 | Cardio Mix    |                  1 | Vivek     |
+|  3 | Running Hits  |                  2 | Santosh   |
+|  4 | Chill Vibes   |               NULL | Pramod    |
++----+---------------+--------------------+-----------+
+4 rows in set (0.01 sec)
+
+mysql> alter table playlists rename column playlist_name to song_title;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from playlists;
++----+--------------+--------------------+-----------+
+| id | song_title   | parent_playlist_id | user_name |
++----+--------------+--------------------+-----------+
+|  1 | Workout      |               NULL | Hiren     |
+|  2 | Cardio Mix   |                  1 | Vivek     |
+|  3 | Running Hits |                  2 | Santosh   |
+|  4 | Chill Vibes  |               NULL | Pramod    |
++----+--------------+--------------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> create table food_items(item_code varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into food_items values
+    -> ('A215');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into food_items values
+    -> ('4N54'),
+    -> (' 9G4Y7 '),
+    -> (' 7M4Y7'),
+    -> ('MK21  '),
+    -> ('  85AA23  ');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from food_items;
++------------+
+| item_code  |
++------------+
+| A215       |
+| 4N54       |
+|  9G4Y7     |
+|  7M4Y7     |
+| MK21       |
+|   85AA23   |
++------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     item_code,
+    ->     TRIM(item_code) AS cleaned_item_code
+    -> FROM food_items;
++------------+-------------------+
+| item_code  | cleaned_item_code |
++------------+-------------------+
+| A215       | A215              |
+| 4N54       | 4N54              |
+|  9G4Y7     | 9G4Y7             |
+|  7M4Y7     | 7M4Y7             |
+| MK21       | MK21              |
+|   85AA23   | 85AA23            |
++------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql>
+
+mysql> desc movies;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| movie_name            | varchar(50)   | YES  |     | NULL    |       |
+| release_year          | int           | YES  |     | NULL    |       |
+| genre                 | varchar(20)   | YES  |     | NULL    |       |
+| movie_id              | int           | YES  |     | NULL    |       |
+| box_office_collection | int           | YES  |     | NULL    |       |
+| rating                | decimal(10,2) | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select * from movies;
++------------+--------------+----------+----------+-----------------------+--------+
+| movie_name | release_year | genre    | movie_id | box_office_collection | rating |
++------------+--------------+----------+----------+-----------------------+--------+
+| Inception  |         2009 | Action   |        1 |                  2500 |   4.20 |
+| Saiyara    |         2025 | Romantic |        2 |                  7800 |   4.60 |
+| Shiddat    |         2021 | Romantic |        3 |            2100000000 |   4.10 |
++------------+--------------+----------+----------+-----------------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> alter table movies add (imdb_id int);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update movies set imdb_id = '7' where movie_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update movies set imdb_id = '12' where movie_id = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update movies set imdb_id = '4' where movie_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from movies;
++------------+--------------+----------+----------+-----------------------+--------+---------+
+| movie_name | release_year | genre    | movie_id | box_office_collection | rating | imdb_id |
++------------+--------------+----------+----------+-----------------------+--------+---------+
+| Inception  |         2009 | Action   |        1 |                  2500 |   4.20 |       7 |
+| Saiyara    |         2025 | Romantic |        2 |                  7800 |   4.60 |      12 |
+| Shiddat    |         2021 | Romantic |        3 |            2100000000 |   4.10 |       4 |
++------------+--------------+----------+----------+-----------------------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     imdb_id,
+    ->     RIGHT(imdb_id, 7) AS movie_number
+    -> FROM movies;
++---------+--------------+
+| imdb_id | movie_number |
++---------+--------------+
+|       7 | 7            |
+|      12 | 12           |
+|       4 | 4            |
++---------+--------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+mysql> desc products;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| id         | int         | YES  |     | NULL    |       |
+| name       | varchar(50) | YES  |     | NULL    |       |
+| price      | int         | YES  |     | NULL    |       |
+| category   | varchar(50) | YES  |     | NULL    |       |
+| sold_count | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from products;
++------+-------------------+-------+-------------+------------+
+| id   | name              | price | category    | sold_count |
++------+-------------------+-------+-------------+------------+
+|    1 | Laptop            | 85000 | Electronics |         17 |
+|    2 | Mouse             |   450 | Electronics |         48 |
+|    3 | Chair             |  2500 | Furniture   |         25 |
+|    4 | NoteBook          |   210 | Stationary  |         35 |
+|    5 | Pen               |    70 | Stationary  |        540 |
+|    6 | Earbuds           |  1450 | Electronics |         87 |
+|    7 | Bluetooth Speaker |  1100 | Electronics |         89 |
+|    8 | Smart Watch       |  1800 | Electronics |         52 |
+|    8 | Power Bank        |   800 | Electronics |         52 |
+|    9 | Tablet            |  6500 | Electronics |         45 |
+|   10 | Screen Gard       |   254 | Asseccory   |        285 |
+|   11 | Charger Cable     |    39 | Electronics |         85 |
+|   12 | Adaptor           |    49 | Electronics |         94 |
+|   13 | Mobile Cover      |    79 | Electronics |         84 |
++------+-------------------+-------+-------------+------------+
+14 rows in set (0.01 sec)
+
+mysql> alter table products add (sku_code varchar(50));
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update products set sku_code = 'MOB-541-NB' where id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update products set sku_code = 'LCD-32-CC' where id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update products set sku_code = 'KLU-231-JJ' where id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update products set sku_code = 'DFR-754-YT' where id = 4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update products set sku_code = 'TV-663-TY' where id = 5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update products set sku_code = 'LAP-221-LK' where id = 6;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from products;
++------+-------------------+-------+-------------+------------+------------+
+| id   | name              | price | category    | sold_count | sku_code   |
++------+-------------------+-------+-------------+------------+------------+
+|    1 | Laptop            | 85000 | Electronics |         17 | MOB-541-NB |
+|    2 | Mouse             |   450 | Electronics |         48 | LCD-32-CC  |
+|    3 | Chair             |  2500 | Furniture   |         25 | KLU-231-JJ |
+|    4 | NoteBook          |   210 | Stationary  |         35 | DFR-754-YT |
+|    5 | Pen               |    70 | Stationary  |        540 | TV-663-TY  |
+|    6 | Earbuds           |  1450 | Electronics |         87 | LAP-221-LK |
+|    7 | Bluetooth Speaker |  1100 | Electronics |         89 | NULL       |
+|    8 | Smart Watch       |  1800 | Electronics |         52 | NULL       |
+|    8 | Power Bank        |   800 | Electronics |         52 | NULL       |
+|    9 | Tablet            |  6500 | Electronics |         45 | NULL       |
+|   10 | Screen Gard       |   254 | Asseccory   |        285 | NULL       |
+|   11 | Charger Cable     |    39 | Electronics |         85 | NULL       |
+|   12 | Adaptor           |    49 | Electronics |         94 | NULL       |
+|   13 | Mobile Cover      |    79 | Electronics |         84 | NULL       |
++------+-------------------+-------+-------------+------------+------------+
+14 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     sku_code,
+    ->     REPLACE(sku_code, '-', '_') AS updated_sku_code
+    -> FROM products;
++------------+------------------+
+| sku_code   | updated_sku_code |
++------------+------------------+
+| MOB-541-NB | MOB_541_NB       |
+| LCD-32-CC  | LCD_32_CC        |
+| KLU-231-JJ | KLU_231_JJ       |
+| DFR-754-YT | DFR_754_YT       |
+| TV-663-TY  | TV_663_TY        |
+| LAP-221-LK | LAP_221_LK       |
+| NULL       | NULL             |
+| NULL       | NULL             |
+| NULL       | NULL             |
+| NULL       | NULL             |
+| NULL       | NULL             |
+| NULL       | NULL             |
+| NULL       | NULL             |
+| NULL       | NULL             |
++------------+------------------+
+14 rows in set (0.00 sec)
+
+mysql>
+
+# Session - 17
+mysql> create table FoodOrders(order_id int, total_amount int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into FoodOrders values
+    -> (101, 211),
+    -> (102, 450),
+    -> (103, 1100);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from FoodOrders;
++----------+--------------+
+| order_id | total_amount |
++----------+--------------+
+|      101 |          211 |
+|      102 |          450 |
+|      103 |         1100 |
++----------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     order_id,
+    ->     total_amount,
+    ->     CASE
+    ->         WHEN total_amount < 300 THEN 'Small'
+    ->         WHEN total_amount BETWEEN 300 AND 999 THEN 'Medium'
+    ->         WHEN total_amount >= 1000 THEN 'Large'
+    ->     END AS order_size
+    -> FROM FoodOrders;
++----------+--------------+------------+
+| order_id | total_amount | order_size |
++----------+--------------+------------+
+|      101 |          211 | Small      |
+|      102 |          450 | Medium     |
+|      103 |         1100 | Large      |
++----------+--------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+mysql> desc movies;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| movie_name            | varchar(50)   | YES  |     | NULL    |       |
+| release_year          | int           | YES  |     | NULL    |       |
+| genre                 | varchar(20)   | YES  |     | NULL    |       |
+| movie_id              | int           | YES  |     | NULL    |       |
+| box_office_collection | int           | YES  |     | NULL    |       |
+| rating                | decimal(10,2) | YES  |     | NULL    |       |
+| imdb_id               | int           | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select * from movies;
++------------+--------------+----------+----------+-----------------------+--------+---------+
+| movie_name | release_year | genre    | movie_id | box_office_collection | rating | imdb_id |
++------------+--------------+----------+----------+-----------------------+--------+---------+
+| Inception  |         2009 | Action   |        1 |                  2500 |   4.20 |       7 |
+| Saiyara    |         2025 | Romantic |        2 |                  7800 |   4.60 |      12 |
+| Shiddat    |         2021 | Romantic |        3 |            2100000000 |   4.10 |       4 |
++------------+--------------+----------+----------+-----------------------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> update movies set rating = '7.8' where movie_id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update movies set rating = '9.4' where movie_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT
+    ->     movie_id,
+    ->     rating,
+    ->     CASE
+    ->         WHEN rating >= 8 THEN 'Blockbuster'
+    ->         WHEN rating BETWEEN 5 AND 7.9 THEN 'Hit'
+    ->         ELSE 'Average'
+    ->     END AS popularity
+    -> FROM Movies;
++----------+--------+-------------+
+| movie_id | rating | popularity  |
++----------+--------+-------------+
+|        1 |   7.80 | Hit         |
+|        2 |   4.60 | Average     |
+|        3 |   9.40 | Blockbuster |
++----------+--------+-------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+mysql> create table FlipkartProducts(product_id int, price int);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into FlipkartProducts values
+    -> (101, 5500),
+    -> (102, 298),
+    -> (103, 1100);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from FlipkartProducts;
++------------+-------+
+| product_id | price |
++------------+-------+
+|        101 |  5500 |
+|        102 |   298 |
+|        103 |  1100 |
++------------+-------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT
+    ->     product_id,
+    ->     price,
+    ->     CASE
+    ->         WHEN price < 500 THEN 'Budget'
+    ->         WHEN price BETWEEN 500 AND 2000 THEN 'Standard'
+    ->         ELSE 'Premium'
+    ->     END AS price_category
+    -> FROM FlipkartProducts;
++------------+-------+----------------+
+| product_id | price | price_category |
++------------+-------+----------------+
+|        101 |  5500 | Premium        |
+|        102 |   298 | Budget         |
+|        103 |  1100 | Standard       |
++------------+-------+----------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+mysql> create table SpotifyTracks(track_id int, song_title varchar(50), duration_sec int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into SoptifyTracks values
+    -> (1, 'Intro', 115),
+    -> (2, 'Summer Vibes', 245),
+    -> (3, 'Epic Symphony', 430);
+ERROR 1146 (42S02): Table 'food_delivery_db.soptifytracks' doesn't exist
+mysql> insert into SpotifyTracks values
+    -> (1, 'Intro', 115),
+    -> (2, 'Summer Vibes', 245),
+    -> (3, 'Epic Symphony', 430);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from SpotifyTracks;
++----------+---------------+--------------+
+| track_id | song_title    | duration_sec |
++----------+---------------+--------------+
+|        1 | Intro         |          115 |
+|        2 | Summer Vibes  |          245 |
+|        3 | Epic Symphony |          430 |
++----------+---------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     track_id,
+    ->     song_title,
+    ->     duration_sec,
+    ->     CASE
+    ->         WHEN duration_sec < 180 THEN 'Short'
+    ->         WHEN duration_sec BETWEEN 180 AND 300 THEN 'Medium'
+    ->         ELSE 'Long'
+    ->     END AS duration_label
+    -> FROM SpotifyTracks;
++----------+---------------+--------------+----------------+
+| track_id | song_title    | duration_sec | duration_label |
++----------+---------------+--------------+----------------+
+|        1 | Intro         |          115 | Short          |
+|        2 | Summer Vibes  |          245 | Medium         |
+|        3 | Epic Symphony |          430 | Long           |
++----------+---------------+--------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+# Session - 18
+mysql> create table RestaurantReviews(restaurant_name varchar(50), rating decimal(10,2), review_id int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into RestaurantReviews values
+    -> ('Spice Villa', 4.5, 130),
+    -> ('Urban Tadka', 4.3, 75);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from RestaurantReviews;
++-----------------+--------+-----------+
+| restaurant_name | rating | review_id |
++-----------------+--------+-----------+
+| Spice Villa     |   4.50 |       130 |
+| Urban Tadka     |   4.30 |        75 |
++-----------------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql> CREATE VIEW TopRatedRestaurants AS
+    -> SELECT
+    ->     restaurant_name,
+    ->     AVG(rating) AS average_rating,
+    ->     COUNT(review_id) AS total_reviews
+    -> FROM RestaurantReviews
+    -> GROUP BY restaurant_name
+    -> HAVING AVG(rating) > 4.0;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from RestaurantReviews;
++-----------------+--------+-----------+
+| restaurant_name | rating | review_id |
++-----------------+--------+-----------+
+| Spice Villa     |   4.50 |       130 |
+| Urban Tadka     |   4.30 |        75 |
++-----------------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> create view TopRatedHotels as
+    -> select
+    -> restaurant_name,
+    -> avg(rating) as average_rating,
+    -> count(review_id) as total_reviews
+    -> from RestaurantReviews
+    -> group by restaurant_name
+    -> having avg(rating) > 4.0;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from TopRatedHotels;
++-----------------+----------------+---------------+
+| restaurant_name | average_rating | total_reviews |
++-----------------+----------------+---------------+
+| Spice Villa     |       4.500000 |             1 |
+| Urban Tadka     |       4.300000 |             1 |
++-----------------+----------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+mysql> CREATE OR REPLACE VIEW TopRatedRestaurants AS
+    -> SELECT
+    ->     r.restaurant_id,
+    ->     r.restaurant_name,
+    ->     r.city,
+    ->     AVG(rr.rating) AS avg_rating
+    -> FROM restaurants r
+    -> INNER JOIN restaurant_reviews rr
+    ->     ON r.restaurant_id = rr.restaurant_id
+    -> GROUP BY
+    ->     r.restaurant_id,
+    ->     r.restaurant_name,
+    ->     r.city
+    -> HAVING AVG(rr.rating) >= 4.5;
+mysql> select * from RestaurantReviews;
++-----------------+--------+-----------+--------+
+| restaurant_name | rating | review_id | city   |
++-----------------+--------+-----------+--------+
+| Spice Villa     |   4.50 |       130 | Mumabi |
+| Urban Tadka     |   4.30 |        75 | Delhi  |
++-----------------+--------+-----------+--------+
+2 rows in set (0.01 sec)
+
+mysql> UPDATE TopRatedRestaurants
+    -> SET average_rating = 5.0
+    -> WHERE restaurant_name = 'Spice Villa';
+ERROR 1288 (HY000): The target table TopRatedRestaurants of the UPDATE is not updatable
+mysql>
+
+mysql> create table SwiggyOrders(order_date date, order_id int, order_amount int);
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> insert into SwiggyOrders values
+    -> ('2026-07-01', 120, 85000),
+    -> ('2026-07-02', 95, 72500),
+    -> ('2026-07-03', 140, 96200);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from SwiggyOrders;
++------------+----------+--------------+
+| order_date | order_id | order_amount |
++------------+----------+--------------+
+| 2026-07-01 |      120 |        85000 |
+| 2026-07-02 |       95 |        72500 |
+| 2026-07-03 |      140 |        96200 |
++------------+----------+--------------+
+3 rows in set (0.01 sec)
+
+mysql> CREATE VIEW DailyOrderSummary AS
+    -> SELECT
+    ->     order_date,
+    ->     COUNT(order_id) AS total_orders,
+    ->     SUM(order_amount) AS total_revenue
+    -> FROM SwiggyOrders
+    -> WHERE order_date >= CURDATE() - INTERVAL 30 DAY
+    -> GROUP BY order_date;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from DailyOrderSummary;
++------------+--------------+---------------+
+| order_date | total_orders | total_revenue |
++------------+--------------+---------------+
+| 2026-07-01 |            1 |         85000 |
+| 2026-07-02 |            1 |         72500 |
+| 2026-07-03 |            1 |         96200 |
++------------+--------------+---------------+
+3 rows in set (0.02 sec)
+
+mysql>
+1).
+CREATE VIEW FlipkartDailySales AS
+SELECT order_date, SUM(order_amount) AS total_sales
+FROM Orders
+GROUP BY order_date;
+2).
+CREATE VIEW FlipkartCategoryRevenue AS
+SELECT category_name AS product_category,
+       SUM(order_amount) AS revenue
+FROM Orders
+GROUP BY category_name;
+3).
+CREATE VIEW FlipkartRecentOrders AS
+SELECT order_id, customer_id, order_date, order_amount
+FROM Orders
+WHERE order_date >= CURDATE() - INTERVAL 90 DAY;
+
+# Session - 19
+mysql> desc orders;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| order_id     | int           | NO   | PRI | NULL    |       |
+| user_id      | int           | YES  |     | NULL    |       |
+| total_amount | decimal(10,2) | YES  |     | NULL    |       |
+| app_name     | varchar(50)   | YES  |     | NULL    |       |
+| order_date   | date          | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+5 rows in set (0.04 sec)
+
+mysql> set profiling = 1;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> select * from orders where user_id = 12345;
+Empty set (0.01 sec)
+
+mysql> show profiles;
++----------+------------+--------------------------------------------+
+| Query_ID | Duration   | Query                                      |
++----------+------------+--------------------------------------------+
+|        1 | 0.01488950 | select * from orders where user_id = 12345 |
++----------+------------+--------------------------------------------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql>
+
+mysql> CREATE INDEX idx_user_id
+    -> ON orders(user_id);
+Query OK, 0 rows affected (0.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *
+    -> FROM orders
+    -> WHERE user_id = 101;
++----------+---------+--------------+----------+------------+
+| order_id | user_id | total_amount | app_name | order_date |
++----------+---------+--------------+----------+------------+
+|        1 |     101 |       450.00 | Zomato   | 2026-07-01 |
+|        4 |     101 |       250.00 | Zomato   | 2026-07-02 |
++----------+---------+--------------+----------+------------+
+2 rows in set (0.01 sec)
+
+mysql> SET profiling = 1;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql>
+mysql> SELECT *
+    -> FROM orders
+    -> WHERE user_id = 101;
++----------+---------+--------------+----------+------------+
+| order_id | user_id | total_amount | app_name | order_date |
++----------+---------+--------------+----------+------------+
+|        1 |     101 |       450.00 | Zomato   | 2026-07-01 |
+|        4 |     101 |       250.00 | Zomato   | 2026-07-02 |
++----------+---------+--------------+----------+------------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql> SET profiling = 1;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql>
+mysql> SELECT *
+    -> FROM orders
+    -> WHERE user_id = 101;
++----------+---------+--------------+----------+------------+
+| order_id | user_id | total_amount | app_name | order_date |
++----------+---------+--------------+----------+------------+
+|        1 |     101 |       450.00 | Zomato   | 2026-07-01 |
+|        4 |     101 |       250.00 | Zomato   | 2026-07-02 |
++----------+---------+--------------+----------+------------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql> SHOW PROFILES;
++----------+------------+---------------------------------------------+
+| Query_ID | Duration   | Query                                       |
++----------+------------+---------------------------------------------+
+|        1 | 0.01488950 | select * from orders where user_id = 12345  |
+|        2 | 0.00171900 | create index_user_id on orders(user_id)     |
+|        3 | 0.20636475 | CREATE INDEX idx_user_id
+ON orders(user_id) |
+|        4 | 0.01017425 | SELECT *
+FROM orders
+WHERE user_id = 101    |
+|        5 | 0.00050700 | SET profiling = 1                           |
+|        6 | 0.00067900 | SELECT *
+FROM orders
+WHERE user_id = 101    |
+|        7 | 0.00039275 | SET profiling = 1                           |
+|        8 | 0.00418425 | SELECT *
+FROM orders
+WHERE user_id = 101    |
++----------+------------+---------------------------------------------+
+8 rows in set, 1 warning (0.00 sec)
+
+mysql>
+
+mysql> EXPLAIN SELECT * FROM orders WHERE user_id = 12345;
++----+-------------+--------+------------+------+---------------+-------------+---------+-------+------+----------+-------+
+| id | select_type | table  | partitions | type | possible_keys | key         | key_len | ref   | rows | filtered | Extra |
++----+-------------+--------+------------+------+---------------+-------------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | orders | NULL       | ref  | idx_user_id   | idx_user_id | 5       | const |    1 |   100.00 | NULL  |
++----+-------------+--------+------------+------+---------------+-------------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql>
+
+
+mysql> EXPLAIN SELECT * FROM orders WHERE user_id = 12345;
++----+-------------+--------+------------+------+---------------+-------------+---------+-------+------+----------+-------+
+| id | select_type | table  | partitions | type | possible_keys | key         | key_len | ref   | rows | filtered | Extra |
++----+-------------+--------+------------+------+---------------+-------------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | orders | NULL       | ref  | idx_user_id   | idx_user_id | 5       | const |    1 |   100.00 | NULL  |
++----+-------------+--------+------------+------+---------------+-------------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.09 sec)
+
+mysql>
+
+# Session - 20
